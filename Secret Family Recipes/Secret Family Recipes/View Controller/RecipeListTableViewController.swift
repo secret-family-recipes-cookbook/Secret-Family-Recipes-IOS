@@ -19,9 +19,15 @@ class RecipeListTableViewController: UITableViewController {
         
     }
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UITableView.appearance().backgroundColor = .white
+        UITableView.appearance().tintColor = .black
+        UINavigationBar.appearance().backgroundColor = .darkGray
+        UINavigationBar.appearance().tintColor = .darkGray
         // search delegate
         searchBar.delegate = self
         
@@ -69,8 +75,14 @@ class RecipeListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "recipeCell", for: indexPath)
-        
-        cell.textLabel?.text = "\(recipes[indexPath.row].name)"
+        var recipesArray: [Recipe] = []
+        if isSearching {
+            recipesArray = searchedRecipes
+        } else {
+            recipesArray = recipes
+        }
+        cell.textLabel?.text = recipesArray[indexPath.row].title
+        cell.detailTextLabel?.text = recipesArray[indexPath.row].category
         cell.layer.cornerRadius = 8.0
         
         return cell
@@ -112,20 +124,39 @@ extension RecipeListTableViewController: UISearchBarDelegate {
         } else {
         print("Text is: \(searchText)")
         self.searchedRecipes = self.recipes.filter({ (text: Recipe) -> Bool in
-            return (text.name.trimmingCharacters(in: CharacterSet.whitespaces).lowercased().contains(searchText.trimmingCharacters(in: .whitespaces).lowercased()))
+            return (text.title.trimmingCharacters(in: CharacterSet.whitespaces).lowercased().contains(searchText.trimmingCharacters(in: .whitespaces).lowercased()))
         })
         self.isSearching = true
         self.tableView.reloadData()
         }
     }
     
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        searchedRecipes.removeAll()
+        for recipe in recipes {
+            if recipe.category == searchBar.scopeButtonTitles![selectedScope] {
+                isSearching = true
+                searchedRecipes.append(recipe)
+            } else {
+                isSearching = true
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        if selectedScope == 0 {
+            isSearching = false
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        self.isSearching = false
         tableView.reloadData()
     }
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        self.isSearching = false
-        
+        tableView.reloadData()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

@@ -17,13 +17,9 @@ enum LoginType {
 class RegisterViewController: UIViewController, UITextFieldDelegate {
 
     
-    @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var loginTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var repeatPasswordTextField: UITextField!
-    @IBOutlet weak var addressTextField: UITextField!
-    @IBOutlet weak var phoneNumberTextField: UITextField!
     @IBOutlet weak var registeredButton: UIButton!
 
 
@@ -74,13 +70,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        nameTextField.delegate = self
-        emailTextField.delegate = self
+        
         loginTextField.delegate = self
         passwordTextField.delegate = self
         repeatPasswordTextField.delegate = self
-        addressTextField.delegate = self
-        phoneNumberTextField.delegate = self
         setupAppearance()
 
     }
@@ -88,12 +81,8 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     // MARK: UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
-        nameTextField.resignFirstResponder()
-        emailTextField.resignFirstResponder()
         loginTextField.resignFirstResponder()
         passwordTextField.resignFirstResponder()
-        addressTextField.resignFirstResponder()
-        phoneNumberTextField.resignFirstResponder()
         registeredButton.resignFirstResponder()
         repeatPasswordTextField.resignFirstResponder()
         return true
@@ -105,13 +94,9 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
 
     private func setupAppearance() {
 
-        ThemeHelper.textFieldStyle(for: nameTextField)
-        ThemeHelper.textFieldStyle(for: emailTextField)
         ThemeHelper.textFieldStyle(for: loginTextField)
         ThemeHelper.textFieldStyle(for: passwordTextField)
         ThemeHelper.textFieldStyle(for: repeatPasswordTextField)
-        ThemeHelper.textFieldStyle(for: addressTextField)
-        ThemeHelper.textFieldStyle(for: phoneNumberTextField)
         ThemeHelper.buttonStyle(for: registeredButton)
 
      view.backgroundColor = ThemeHelper.customBlue

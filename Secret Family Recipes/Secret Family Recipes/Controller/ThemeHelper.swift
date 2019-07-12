@@ -24,6 +24,7 @@ enum ThemeHelper {
 
         UINavigationBar.appearance().barTintColor = customBlue
         UIBarButtonItem.appearance().tintColor = .white
+
         
         let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         UINavigationBar.appearance().titleTextAttributes = textAttributes
