@@ -53,11 +53,16 @@ func register(with user: User, completion: @escaping (Bool) -> Void) {
         
         do {
             //create json object from data
-            if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [Int] {
+            if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
                 print(json)
                 // handle json...
-                self.userId = json.first
-                completion(true)
+                if let id = json["id"] as? Int {
+                    RecipeCotroller.shared.userId = id
+                    //ActionController.shared.userId = id
+                    self.userId = id
+                    completion(true)
+                }
+                
             } else  {
                 completion(false)
             }
@@ -116,14 +121,15 @@ func login(with user: User, completion: @escaping (String?) -> Void) {
                    // ActionController.shared.token = token
                     self.token = token
                     completion(token)
-                }
-                if let id = json["user_id"] as? Int {
+                } 
+                if let id = json["id"] as? Int {
                     RecipeCotroller.shared.userId = id
                      //ActionController.shared.userId = id
                     self.userId = id
                 }
                 
             }
+            
         } catch let error {
             print(error.localizedDescription)
         }
